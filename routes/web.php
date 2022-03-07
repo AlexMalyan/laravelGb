@@ -1,6 +1,10 @@
 <?php
 
+
+use App\Http\Controllers\NewsController ;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,15 +21,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/welcome', function () {
-    return view('welcomeOne');
-});
-Route::get('/info', function () {
-    return view('info');
-});
-Route::get('/news', function () {
-    return view('news');
-});
+Route::get('json', [\App\Http\Controllers\Controller::class, 'getJson']);
 
+Route::get('/categories', [CategoryController::class, 'index'])
+    ->name('categories');
 
-Route::get('hello/{name}', fn(string $name) => "Hello {$name}");
+Route::get('/categories/{cat}', [CategoryController::class, 'show'])
+    ->name('categories.show');
+
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->name('news.show')
+    ->where('id', '\d+');
+
